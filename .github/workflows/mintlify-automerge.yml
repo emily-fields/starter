@@ -18,8 +18,5 @@ jobs:
           git checkout mintlify
           git merge --ff-only main
           git push origin mintlify
-        with:
-          type: now
-          from_branch: main
-          target_branch: mintlify
-          github_token: ${{ secrets.EMILY_PAT }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.EMILY_PAT }}
