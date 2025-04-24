@@ -15,4 +15,4 @@ jobs:
           type: now
           from_branch: main
           target_branch: mintlify
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          github_token: ${{ secrets.EMILY_PAT }}
