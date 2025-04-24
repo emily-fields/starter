@@ -12,11 +12,9 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Merge main -> mintlify
-        run: |
-          git config user.name "GitHub Actions"
-          git config user.email "actions@github.com"
-          git checkout mintlify
-          git merge --ff-only main
-          git push origin mintlify
-        env:
-          GITHUB_TOKEN: ${{ secrets.EMILY_PAT }}
+        uses: devmasx/merge-branch@v1.4.0
+        with:
+          type: now
+          from_branch: main
+          target_branch: mintlify
+          github_token: ${{ secrets.EMILY_PAT }}
