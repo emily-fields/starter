@@ -3,8 +3,6 @@ on:
   push:
     branches:
       - main
-    paths:
-      - 'essentials/**'
 jobs:
   sync-branch:
     runs-on: ubuntu-latest
@@ -17,4 +15,4 @@ jobs:
           type: now
           from_branch: main
           target_branch: mintlify
-          github_token: ${{ secrets.EMILY_PAT }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
