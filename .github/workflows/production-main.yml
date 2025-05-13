@@ -8,11 +8,18 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
-
-      - name: Merge production -> main
-        uses: devmasx/merge-branch@v1.4.0
         with:
-          type: now
-          from_branch: production
-          target_branch: main
-          github_token: ${{ secrets.EMILY_PAT }}
+          fetch-depth: 0
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v5
+        with:
+          token: ${{ secrets.EMILY_PAT }}
+          commit-message: 'chore: sync production to main'
+          title: 'chore: sync production to main'
+          body: 'Automated PR to sync production branch to main'
+          branch: sync-production-to-main
+          base: main
+          labels: |
+            automated pr
+            sync
