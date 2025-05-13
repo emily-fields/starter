@@ -1,53 +1,33 @@
-name: Production automerge
+name: Production automerge with new branch
+
 on:
   push:
     branches:
       - production
+
 jobs:
-  sync-production-main-branch:
+  create-pr:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout production branch
+        uses: actions/checkout@v4
         with:
-          fetch-depth: 0
+          ref: main
 
-      - name: Set up Git user
+      - name: Reset branch
         run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git fetch origin production:production
+          git reset --hard production
 
-      - name: Fetch all branches
-        run: git fetch --all
-
-      - name: Checkout main branch
-        run: git checkout main
-
-      - name: Merge production into main
-        run: git merge origin/production
-
-      - name: Create Pull Request
-        id: cpr
-        uses: peter-evans/create-pull-request@v5
+      - name: Create pull request
+        uses: peter-evans/create-pull-request@v7
         with:
           token: ${{ secrets.EMILY_PAT }}
           commit-message: 'chore: sync production to main'
-          title: 'chore: sync production to main'
-          body: 'Automated PR to sync production branch to main'
+          title: 'Sync production to main'
+          body: 'Automated PR to sync production branch to main branch'
           branch: sync-production-to-main
           base: main
           labels: |
-            automated pr
+            automated
             sync
-    outputs:
-      pr_number: ${{ steps.cpr.outputs.pull-request-number }}
-
-  automerge:
-    needs: sync-production-main-branch
-    runs-on: ubuntu-latest
-    steps:
-      - name: Enable Pull Request Automerge
-        uses: peter-evans/enable-pull-request-automerge@v3
-        with:
-          token: ${{ secrets.EMILY_PAT }}
-          pull-request-number: ${{ needs.sync-production-main-branch.outputs.pr_number }}
-          merge-method: merge
