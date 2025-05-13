@@ -1,4 +1,4 @@
-name: Mintlify automerge
+name: Production automerge
 on:
   push:
     branches:
@@ -9,10 +9,10 @@ jobs:
     steps:
       - uses: actions/checkout@master
 
-      - name: Merge production -> mintlify
+      - name: Merge production -> main
         uses: devmasx/merge-branch@v1.4.0
         with:
           type: now
           from_branch: production
-          target_branch: mintlify
+          target_branch: main
           github_token: ${{ secrets.EMILY_PAT }}
