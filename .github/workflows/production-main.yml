@@ -1,4 +1,4 @@
-name: Production automerge with same branch
+name: Production automerge with new branch
 
 on:
   push:
@@ -9,18 +9,20 @@ jobs:
   create-pr:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout production branch
+        uses: actions/checkout@v4
         with:
-          fetch-depth: 0
+          ref: production
 
-      - name: Create Pull Request
+      - name: Create production -> main pull request
         uses: peter-evans/create-pull-request@v7
         with:
           token: ${{ secrets.EMILY_PAT }}
-          base: main
-          title: 'Sync production into main'
-          body: 'Automated PR to sync production into main'
-          labels: automated,sync
+          commit-message: 'chore: sync production to main'
+          title: 'Sync production to main'
+          body: 'Automated PR to sync production branch to main branch'
           branch: sync-production-to-main
-          commit-message: 'Sync production into main'
-          delete-branch: true
+          base: main
+          labels: |
+            automated
+            sync
