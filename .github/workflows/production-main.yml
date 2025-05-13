@@ -1,4 +1,4 @@
-name: Production automerge
+name: Production automerge with same branch
 
 on:
   push:
