@@ -12,9 +12,14 @@ jobs:
       - name: Checkout production branch
         uses: actions/checkout@v4
         with:
-          ref: production
+          ref: main
 
-      - name: Create production -> main pull request
+      - name: Reset branch
+        run: |
+          git fetch origin production:production
+          git reset --hard production
+
+      - name: Create pull request
         uses: peter-evans/create-pull-request@v7
         with:
           token: ${{ secrets.EMILY_PAT }}
