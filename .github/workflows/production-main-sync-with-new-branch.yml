@@ -20,8 +20,9 @@ jobs:
           commit-message: 'chore: sync production to main'
           title: 'Sync production to main'
           body: 'Automated PR to sync production branch to main branch'
-          branch: sync-production-to-main-${{ github.sha }}
+          branch: sync-production-to-main
           base: main
+          push-to-fork: ${{ github.repository }}
           labels: |
             automated
             sync
