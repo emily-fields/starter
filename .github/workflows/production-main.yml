@@ -14,11 +14,6 @@ jobs:
         with:
           ref: main
 
-      - name: Reset branch
-        run: |
-          git fetch origin production:production
-          git reset --hard production
-
       - name: Create pull request
         uses: peter-evans/create-pull-request@v7
         with:
