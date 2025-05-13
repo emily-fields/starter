@@ -1,53 +1,27 @@
 name: Production automerge
+
 on:
   push:
     branches:
       - production
+
 jobs:
-  sync-production-main-branch:
+  create-pr:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
 
-      - name: Set up Git user
+      - name: Install GitHub CLI
+        run: sudo apt-get install gh
+
+      - name: Authenticate GitHub CLI
+        run: echo "${{ secrets.EMILY_PAT }}" | gh auth login --with-token
+
+      - name: Create PR from production to main
         run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-
-      - name: Fetch all branches
-        run: git fetch --all
-
-      - name: Checkout main branch
-        run: git checkout main
-
-      - name: Merge production into main
-        run: git merge origin/production
-
-      - name: Create Pull Request
-        id: cpr
-        uses: peter-evans/create-pull-request@v5
-        with:
-          token: ${{ secrets.EMILY_PAT }}
-          commit-message: 'chore: sync production to main'
-          title: 'chore: sync production to main'
-          body: 'Automated PR to sync production branch to main'
-          branch: sync-production-to-main
-          base: main
-          labels: |
-            automated pr
-            sync
-    outputs:
-      pr_number: ${{ steps.cpr.outputs.pull-request-number }}
-
-  automerge:
-    needs: sync-production-main-branch
-    runs-on: ubuntu-latest
-    steps:
-      - name: Enable Pull Request Automerge
-        uses: peter-evans/enable-pull-request-automerge@v3
-        with:
-          token: ${{ secrets.EMILY_PAT }}
-          pull-request-number: ${{ needs.sync-production-main-branch.outputs.pr_number }}
-          merge-method: merge
+          gh pr create \
+            --base main \
+            --head production \
+            --title "Sync production into main" \
+            --body "Automated PR to sync production into main" \
+            --label "automated,sync" || echo "PR already exists or no changes"
