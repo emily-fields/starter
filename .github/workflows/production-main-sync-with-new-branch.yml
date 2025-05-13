@@ -22,7 +22,6 @@ jobs:
           body: 'Automated PR to sync production branch to main branch'
           branch: sync-production-to-main-${{ github.sha }}
           base: main
-          delete-branch: true
           labels: |
             automated
             sync
