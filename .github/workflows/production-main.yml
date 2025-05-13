@@ -1,4 +1,4 @@
-name: Production automerge with new branch
+name: Sync production to main
 
 on:
   push:
@@ -6,10 +6,10 @@ on:
       - production
 
 jobs:
-  create-pr:
+  sync-production-to-main:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout production branch
+      - name: Checkout main branch
         uses: actions/checkout@v4
         with:
           ref: main
@@ -25,7 +25,7 @@ jobs:
           token: ${{ secrets.EMILY_PAT }}
           commit-message: 'chore: sync production to main'
           title: 'Sync production to main'
-          body: 'Automated PR to sync production branch to main branch'
+          body: 'Automated PR to sync `production` branch to `main` branch'
           branch: sync-production-to-main
           base: main
           labels: |
