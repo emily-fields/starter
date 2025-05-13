@@ -28,6 +28,7 @@ jobs:
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v5
         with:
+          token: ${{ secrets.EMILY_PAT }}
           commit-message: 'chore: sync production to main'
           title: 'chore: sync production to main'
           body: 'Automated PR to sync production branch to main'
